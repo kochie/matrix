@@ -1,3 +1,12 @@
-  language: go
-  go:
-    - "1.10"
+language: go
+go:
+- '1.10'
+env:
+  global:
+    secure: EXd62BKqRSbe/7+NIQIS7SQMakkkgY4lgO5gNkWMCp/EksHl2Bf8ZdESSDAz9ZTvu27Qx38Pl+o0Jlscrvs4Empm30vm5rNlAepU041mBE3/BZKdDROnpZdhEhFASO/oSRrirJdGp7QeLlZqew5nXXE+tg7wDiU3RPNPQeFEX8jAUZC1Cd9cjTUOgK7XVysyY+ZT5LmJZTizWDZmXHObNf2kmDn0vTrNKqUFz/zR7O3OHDBQHDXim0LnuWbSisx7fI6IrAf8XqrBt0ZI3DukvgarBl1YZgC6ruR7+4GcYpsuvw3cm9rWvlC6fSIyU2kXhyKkgev1yVgbchdP7lVockweMBPaRPidhQYwGuAQPZaD/Es58wuPe0BG7toM0viezzv2sgolZyM54D5Sibf61NL7iA4d1dqr8o5gDSrqljTt36QAC2pFxJ9+mJvL5yd+BwqxmdqzYeJz2ieCS87Mm2Z7b2SMxdBRsjli6WXYSz1+Xh7ICGg9KI+zGk2NZ5zIfncwCFogTGndjM+m1wfhpIZlx+Jnz9h/z1clKVzNevPQdF3KA4eFQur4aABHEJNV9an7se67o2OmLD4KLleZSqbuVRcAri3B07Wo42KE33+8ci0B8rpTMBe1UmkpMW9iy5OScUp+DKYzSWMP44aR86S3pMjhYN4WJmQsA14hwW8=
+before_install:
+- go get github.com/mattn/goveralls
+- go get golang.org/x/tools/cmd/cover
+script:
+- go vet
+- goveralls -repotoken ${repo_token}
