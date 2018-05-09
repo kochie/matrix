@@ -9,4 +9,5 @@ before_install:
 - go get golang.org/x/tools/cmd/cover
 script:
 - go vet
+- go test
 - goveralls -repotoken ${repo_token}
