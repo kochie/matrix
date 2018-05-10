@@ -1,6 +1,7 @@
 package matrix
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -78,6 +79,33 @@ func TestGetValue(t *testing.T) {
 	if err == nil {
 		t.Errorf("Did not throw error for out of bounds matrix grab.")
 	}
+}
+
+func TestMinor(t *testing.T) {
+	assert := assert.New(t)
+
+	a, err := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+	if err != nil {
+		t.Errorf("Caught Error %s", err.Error())
+	}
+
+	b, err := a.Minor(1, 3, 1, 3)
+	assert.Equal(b.Rows, 3)
+	assert.Equal(b.Columns, 3)
+	assert.Equal(b.Capacity, 9)
+	assert.Equal(b.Elements, []float64{6, 7, 8, 10, 11, 12, 14, 15, 16})
+
+	c, err := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+	if err != nil {
+		t.Errorf("Caught Error %s", err.Error())
+	}
+
+	d, err := c.Minor(0, 3, 0, 0)
+	assert.Equal(d.Rows, 4)
+	assert.Equal(d.Columns, 1)
+	assert.Equal(d.Capacity, 4)
+	assert.Equal(d.Elements, []float64{1, 5, 9, 13})
+
 }
 
 func TestTranspose(t *testing.T) {

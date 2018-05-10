@@ -199,7 +199,7 @@ func (m MatrixStruct) Normal(normType string) float64 {
 }
 
 // Minor will return a new matrix whos values are the minor of the selected matrix at the given coordinates.
-func (m MatrixStruct) Minor(row1, row2, column1, column2 int) (*MatrixStruct, error) {
+func (m MatrixStruct) Minor(column1, column2, row1, row2 int) (*MatrixStruct, error) {
 	if row1 > row2 || column1 > column2 {
 		return nil, errors.New("Matrix index mismatch")
 	}
@@ -216,7 +216,7 @@ func (m MatrixStruct) Minor(row1, row2, column1, column2 int) (*MatrixStruct, er
 		}
 	}
 
-	return Matrix(row2-row1+1, column2-column1+1, elem)
+	return Matrix(column2-column1+1, row2-row1+1, elem)
 }
 
 // MinorUpdate will update the selected area in a matrix minor with new values and return a new matrix with the replaced numbers.
@@ -329,11 +329,11 @@ func (m MatrixStruct) QR() (Q *MatrixStruct, R *MatrixStruct) {
 		temp, _ := r1.Subtract(houseHolder)
 		R, _ = R.MinorUpdate(k, M-1, k, N-1, temp)
 
-		q1, _ := Q.Minor(k, M-1, k, N-1)
+		q1, _ := Q.Minor(k, M-1, 0, M-1)
 		q1.Print()
 		houseHolder, _ = uDot.ScalarMultiply(2).Multiply(q1)
 		temp, _ = q1.Subtract(houseHolder)
-		Q, _ = Q.MinorUpdate(k, M-1, k, M-1, temp)
+		Q, _ = Q.MinorUpdate(k, M-1, 0, M-1, temp)
 	}
 
 	Q = Q.Transpose()
