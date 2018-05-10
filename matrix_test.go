@@ -192,9 +192,6 @@ func TestQR(t *testing.T) {
 	}
 	Q, R := a.QR()
 
-	Q.Print()
-	R.Print()
-
 	A, _ := Q.Multiply(R)
 	A.Print()
 }

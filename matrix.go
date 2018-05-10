@@ -292,7 +292,6 @@ func (m MatrixStruct) QR() (Q *MatrixStruct, R *MatrixStruct) {
 
 	for k := 0; k < N; k++ {
 		x, err := R.Minor(k, M-1, k, k)
-		x.Print()
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -319,18 +318,15 @@ func (m MatrixStruct) QR() (Q *MatrixStruct, R *MatrixStruct) {
 		}
 
 		v, _ := x.Subtract(y)
-		fmt.Println("v Normal", v.Normal("2"))
 		u := v.ScalarMultiply(1 / v.Normal("2"))
 
 		r1, _ := R.Minor(k, M-1, k, N-1)
-		r1.Print()
 		uDot, _ := u.Multiply(u.Transpose())
 		houseHolder, _ := uDot.ScalarMultiply(2).Multiply(r1)
 		temp, _ := r1.Subtract(houseHolder)
 		R, _ = R.MinorUpdate(k, M-1, k, N-1, temp)
 
 		q1, _ := Q.Minor(k, M-1, 0, M-1)
-		q1.Print()
 		houseHolder, _ = uDot.ScalarMultiply(2).Multiply(q1)
 		temp, _ = q1.Subtract(houseHolder)
 		Q, _ = Q.MinorUpdate(k, M-1, 0, M-1, temp)
