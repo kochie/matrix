@@ -37,10 +37,10 @@ func TestMatrix(t *testing.T) {
 }
 
 func TestEye(t *testing.T) {
+	assert := assert.New(t)
+
 	a, err := Eye(3, 3)
-	if err != nil {
-		t.Errorf("Caught Error %s", err.Error())
-	}
+	assert.Nil(err)
 
 	for i := 0; i < a.Columns; i++ {
 		for j := 0; j < a.Rows; j++ {
@@ -53,6 +53,10 @@ func TestEye(t *testing.T) {
 			}
 		}
 	}
+
+	b, err := Eye(1, 0)
+	assert.Nil(b)
+	assert.NotNil(err)
 }
 
 func TestOnes(t *testing.T) {
