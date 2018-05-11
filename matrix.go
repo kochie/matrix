@@ -281,7 +281,7 @@ func (m MatrixStruct) IsEqual(n *MatrixStruct) bool {
 	return true
 }
 
-// QR will return the QR decomposition of the selected matrix.
+// QR will return the QR decomposition of the selected matrix using the householder decomposition.
 func (m MatrixStruct) QR() (Q *MatrixStruct, R *MatrixStruct) {
 	M := m.Rows
 	N := m.Columns
@@ -320,6 +320,7 @@ func (m MatrixStruct) QR() (Q *MatrixStruct, R *MatrixStruct) {
 	return
 }
 
+// IsSquare will return true if the matrix is square.
 func (m MatrixStruct) IsSquare() bool {
 	if m.Rows == m.Columns {
 		return true
@@ -327,6 +328,7 @@ func (m MatrixStruct) IsSquare() bool {
 	return false
 }
 
+// Prune will zero out small elements in a matrix to allow faster computations. Tolerance in set at 1e-10.
 func (m MatrixStruct) Prune() (*MatrixStruct, error) {
 	elements := make([]float64, m.Capacity)
 	copy(elements, m.Elements)
@@ -341,6 +343,7 @@ func (m MatrixStruct) Prune() (*MatrixStruct, error) {
 	return Matrix(m.Rows, m.Columns, elements)
 }
 
+// Inverse will compute the inverse matrix of a given matrix. FYI at the moment there is no check to see if the matrix is invertable.
 func (m MatrixStruct) Inverse() (*MatrixStruct, error) {
 	if !m.IsSquare() {
 		return nil, errors.New("Not a square matrix")
