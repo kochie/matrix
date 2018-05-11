@@ -83,6 +83,20 @@ func TestTriangleInverse(t *testing.T) {
 	assert.Equal(e.Rows, f.Rows)
 	assert.Equal(e.Columns, f.Columns)
 	assert.Equal(e.Elements, f.Elements)
+
+	g, err := Matrix(8, 2, []float64{1, 2, 3, 4, 0, 5, 6, 7, 0, 0, 8, 9, 0, 0, 0, 10})
+	assert.Nil(err)
+
+	h, err := g.TriangleInverse()
+	assert.Nil(h)
+	assert.NotNil(err)
+
+	i, err := Matrix(4, 4, []float64{1, 2, 3, 4, 3, 5, 6, 7, 0, 0, 8, 9, 0, 0, 0, 10})
+	assert.Nil(err)
+
+	j, err := i.TriangleInverse()
+	assert.Nil(j)
+	assert.NotNil(err)
 }
 
 func Benchmark_TriangleInverse_Upper(b *testing.B) {
