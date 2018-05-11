@@ -58,4 +58,17 @@ func TestUnit(t *testing.T) {
 	assert.Equal(v3_u.Columns, v4.Columns)
 	assert.Equal(v3_u.Capacity, v4.Capacity)
 	assert.Equal(v3_u.Elements, v4.Elements)
+
+	m1, err := Matrix(2, 2, []float64{2, 2, 2, 2})
+	assert.Nil(err)
+	v5, err := m1.Unit()
+	assert.NotNil(err)
+	assert.Nil(v5)
+}
+
+func BenchmarkUnit(b *testing.B) {
+	v1, _ := Vector(5, 6, 7, 8, 9, 2, 3, 4, 5)
+	for i := 0; i < b.N; i++ {
+		_, _ = v1.Unit()
+	}
 }
