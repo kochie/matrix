@@ -55,6 +55,34 @@ func TestEye(t *testing.T) {
 	}
 }
 
+func TestOnes(t *testing.T) {
+	assert := assert.New(t)
+
+	a, err := Ones(4, 4)
+	assert.Nil(err)
+
+	assert.Equal(a.Rows, 4)
+	assert.Equal(a.Columns, 4)
+	assert.Equal(a.Elements, []float64{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1})
+
+	b, err := Ones(2, 16)
+
+	assert.Nil(err)
+	assert.Equal(b.Rows, 2)
+	assert.Equal(b.Columns, 16)
+	assert.Equal(b.Elements, []float64{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1})
+
+	c, err := Ones(0, 0)
+	assert.Nil(c)
+	assert.NotNil(err)
+}
+
+func BenchmarkOnes(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, _ = Ones(5, 5)
+	}
+}
+
 func TestGetValue(t *testing.T) {
 	list := []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}
 	a, err := Matrix(4, 4, list)
