@@ -5,6 +5,25 @@ import (
 	"testing"
 )
 
+func TestShortestDimension(t *testing.T) {
+	assert := assert.New(t)
+
+	a, err := Matrix(1, 2, []float64{1, 2})
+	assert.Nil(err)
+	assert.Equal(a.shortestDimension(), 1)
+
+	b, err := Matrix(2, 1, []float64{1, 2})
+	assert.Nil(err)
+	assert.Equal(b.shortestDimension(), 1)
+}
+
+func BenchmarkShortestDimension(b *testing.B) {
+	a, _ := Matrix(1, 2, []float64{1, 2})
+	for i := 0; i < b.N; i++ {
+		_ = a.shortestDimension()
+	}
+}
+
 func TestMatrix(t *testing.T) {
 	a, err := Matrix(2, 3, []float64{1, 2, 3, 4, 5, 6})
 	if err != nil {
@@ -84,6 +103,70 @@ func TestOnes(t *testing.T) {
 func BenchmarkOnes(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, _ = Ones(5, 5)
+	}
+}
+
+func TestAdd(t *testing.T) {
+	assert := assert.New(t)
+
+	a, err := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+	assert.Nil(err)
+
+	b, err := Matrix(4, 4, []float64{16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1})
+	assert.Nil(err)
+
+	c, err := a.Add(b)
+	assert.Nil(err)
+	assert.Equal(c.Columns, 4)
+	assert.Equal(c.Rows, 4)
+	assert.Equal(c.Elements, []float64{17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17})
+
+	d, err := Matrix(2, 4, []float64{16, 15, 14, 13, 12, 11, 10, 9})
+	assert.Nil(err)
+
+	e, err := d.Add(c)
+	assert.Nil(e)
+	assert.NotNil(err)
+}
+
+func BenchmarkAdd(b *testing.B) {
+	a, _ := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+	c, _ := Matrix(4, 4, []float64{16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1})
+
+	for i := 0; i < b.N; i++ {
+		_, _ = a.Add(c)
+	}
+}
+
+func TestSubtract(t *testing.T) {
+	assert := assert.New(t)
+
+	a, err := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+	assert.Nil(err)
+
+	b, err := Matrix(4, 4, []float64{16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1})
+	assert.Nil(err)
+
+	c, err := a.Subtract(b)
+	assert.Nil(err)
+	assert.Equal(c.Columns, 4)
+	assert.Equal(c.Rows, 4)
+	assert.Equal(c.Elements, []float64{-15, -13, -11, -9, -7, -5, -3, -1, 1, 3, 5, 7, 9, 11, 13, 15})
+
+	d, err := Matrix(2, 4, []float64{16, 15, 14, 13, 12, 11, 10, 9})
+	assert.Nil(err)
+
+	e, err := d.Subtract(c)
+	assert.Nil(e)
+	assert.NotNil(err)
+}
+
+func BenchmarkSubtract(b *testing.B) {
+	a, _ := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+	c, _ := Matrix(4, 4, []float64{16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1})
+
+	for i := 0; i < b.N; i++ {
+		_, _ = a.Subtract(c)
 	}
 }
 
