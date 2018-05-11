@@ -266,37 +266,42 @@ func TestTranspose(t *testing.T) {
 }
 
 func TestMultiply(t *testing.T) {
+	assert := assert.New(t)
+
 	a, err := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
-	if err != nil {
-		t.Errorf("Caught Error %s", err.Error())
-	}
+	assert.Nil(err)
+
 	b, err := a.Multiply(a)
-	if err != nil {
-		t.Errorf("Caught Error %s", err.Error())
-	}
+	assert.Nil(err)
 
 	c, err := Matrix(4, 4, []float64{90, 100, 110, 120, 202, 228, 254, 280, 314, 356, 398, 440, 426, 484, 542, 600})
-	if !b.IsEqual(c) {
-		t.Errorf("Incorrect Matrix Multiplication")
-	}
+	assert.True(b.IsEqual(c))
 
 	d, err := Matrix(8, 1, []float64{1, 2, 3, 4, 5, 6, 7, 8})
-	if err != nil {
-		t.Errorf("Caught Error %s", err.Error())
-	}
+	assert.Nil(err)
+
 	e, err := Matrix(1, 8, []float64{1, 2, 3, 4, 5, 6, 7, 8})
-	if err != nil {
-		t.Errorf("Caught Error %s", err.Error())
-	}
+	assert.Nil(err)
+
 	f, err := d.Multiply(e)
+	assert.Nil(err)
+
 	g, err := Matrix(8, 8, []float64{1, 2, 3, 4, 5, 6, 7, 8, 2, 4, 6, 8, 10, 12, 14, 16, 3, 6, 9, 12, 15, 18, 21, 24, 4, 8, 12, 16, 20, 24, 28, 32, 5, 10, 15, 20, 25, 30, 35, 40, 6, 12, 18, 24, 30, 36, 42, 48, 7, 14, 21, 28, 35, 42, 49, 56, 8, 16, 24, 32, 40, 48, 56, 64})
-	if err != nil {
-		t.Errorf("Caught Error %s", err.Error())
-	}
-	if !g.IsEqual(f) {
-		g.Print()
-		f.Print()
-		t.Errorf("Incorrect Matrix")
+
+	assert.True(g.IsEqual(f))
+
+	h, err := Matrix(2, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8})
+	assert.Nil(err)
+	i, err := h.Multiply(g)
+	assert.Nil(i)
+	assert.NotNil(err)
+}
+
+func BenchmarkMultiply(b *testing.B) {
+	a, _ := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+
+	for i := 0; i < b.N; i++ {
+		_, _ = a.Multiply(a)
 	}
 }
 
