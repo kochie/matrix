@@ -129,6 +129,23 @@ func TestAdd(t *testing.T) {
 	assert.NotNil(err)
 }
 
+func TestTrace(t *testing.T) {
+	assert := assert.New(t)
+
+	a, err := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+	assert.Nil(err)
+
+	assert.Equal(a.Trace(), float64(34))
+}
+
+func BenchmarkTrace(b *testing.B) {
+	a, _ := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+
+	for i := 0; i < b.N; i++ {
+		_ = a.Trace()
+	}
+}
+
 func BenchmarkAdd(b *testing.B) {
 	a, _ := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
 	c, _ := Matrix(4, 4, []float64{16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1})
