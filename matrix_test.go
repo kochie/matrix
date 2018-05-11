@@ -56,22 +56,17 @@ func TestEye(t *testing.T) {
 }
 
 func TestGetValue(t *testing.T) {
+	assert := assert.New(t)
+
 	list := []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}
 	a, err := Matrix(4, 4, list)
-
-	if err != nil {
-		t.Errorf("Caught Error %s", err.Error())
-	}
+	assert.Nil(err)
 
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
 			a11, err := a.GetValue(i, j)
-			if err != nil {
-				t.Errorf("Caught Error %s", err.Error())
-			}
-			if a11 != list[i*4+j] {
-				t.Errorf("Wrong Number %f, should be %f at position %d, %d", a11, list[i*4+j], i, j)
-			}
+			assert.Nil(err)
+			assert.Equal(a11, list[i*4+j])
 		}
 	}
 

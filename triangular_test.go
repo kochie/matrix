@@ -54,3 +54,15 @@ func BenchmarkIsLowerTriangular(b *testing.B) {
 		_ = a.IsLowerTriangular()
 	}
 }
+
+func TestTriangleInverse(t *testing.T) {
+	assert := assert.New(t)
+
+	a, err := Matrix(4, 4, []float64{1, 2, 3, 4, 0, 5, 6, 7, 0, 0, 8, 9, 0, 0, 0, 10})
+	assert.Nil(err)
+
+	b, err := a.TriangleInverse()
+	assert.Nil(err)
+	a.Print()
+	b.Print()
+}
