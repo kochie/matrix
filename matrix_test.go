@@ -195,3 +195,10 @@ func TestQR(t *testing.T) {
 	A, _ := Q.Multiply(R)
 	A.Print()
 }
+
+func BenchmarkQR(b *testing.B) {
+	a, _ := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+	for n := 0; n < b.N; n++ {
+		_, _ = a.QR()
+	}
+}
