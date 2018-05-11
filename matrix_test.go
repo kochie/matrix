@@ -370,3 +370,65 @@ func BenchmarkQR(b *testing.B) {
 		_, _ = a.QR()
 	}
 }
+
+func TestIsSquare(t *testing.T) {
+	assert := assert.New(t)
+
+	a, err := Matrix(2, 2, []float64{1, 2, 3, 4})
+	assert.Nil(err)
+	assert.True(a.IsSquare())
+
+	b, err := Matrix(2, 3, []float64{1, 2, 3, 4, 5, 6})
+	assert.Nil(err)
+	assert.False(b.IsSquare())
+}
+
+func BenchmarkIsSquare(b *testing.B) {
+	a, _ := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+	for n := 0; n < b.N; n++ {
+		_ = a.IsSquare()
+	}
+}
+
+func TestInverse(t *testing.T) {
+	assert := assert.New(t)
+
+	a, err := Matrix(4, 4, []float64{10, 4, 3, 4, 5, 6, 7, 8, 9, 10, 1, 12, 13, 1, 1, 16})
+	assert.Nil(err)
+	a_inv, err := a.Inverse()
+	assert.Nil(err)
+	_, err = a_inv.Multiply(a)
+	assert.Nil(err)
+
+	b, err := Matrix(2, 8, []float64{10, 4, 3, 4, 5, 6, 7, 8, 9, 10, 1, 12, 13, 1, 1, 16})
+	assert.Nil(err)
+	b_inv, err := b.Inverse()
+	assert.NotNil(err)
+	assert.Nil(b_inv)
+}
+
+func BenchmarkInverse(b *testing.B) {
+	a, _ := Matrix(4, 4, []float64{10, 4, 3, 4, 5, 6, 7, 8, 9, 10, 1, 12, 13, 1, 1, 16})
+	for n := 0; n < b.N; n++ {
+		_, _ = a.Inverse()
+	}
+}
+
+func TestPrune(t *testing.T) {
+	assert := assert.New(t)
+
+	a, err := Matrix(4, 4, []float64{10e-13, 4e-3, 3, 4, 5, 6, 7, 8, 9, 10, 1, 12, 13, 1, 1, 16e-15})
+	assert.Nil(err)
+	b, err := a.Prune()
+	assert.Nil(err)
+	assert.Equal(b.Rows, a.Rows)
+	assert.Equal(b.Columns, a.Columns)
+	assert.Equal(b.Elements, []float64{0, 4e-3, 3, 4, 5, 6, 7, 8, 9, 10, 1, 12, 13, 1, 1, 0})
+}
+
+func BenchmarkPrune(b *testing.B) {
+	a, _ := Matrix(4, 4, []float64{10e-13, 4e-3, 3, 4, 5, 6, 7, 8, 9, 10, 1, 12, 13, 1, 1, 16e-15})
+	for n := 0; n < b.N; n++ {
+		_, _ = a.Prune()
+	}
+}

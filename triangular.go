@@ -45,10 +45,27 @@ func (m MatrixStruct) TriangleInverse() (*MatrixStruct, error) {
 				b, _ := inverse.Minor(i, k, k, k)
 				c, _ := a.Multiply(b)
 				d, _ := m.GetValue(i, i)
-				e, _ := c.ScalarMultiply(d).GetValue(0, 0)
+				e, _ := c.ScalarMultiply(-1/d).GetValue(0, 0)
 				inverse.SetValue(i, k, e)
 			}
 		}
+		return inverse, nil
 	}
-	return inverse, nil
+	if m.IsLowerTriangular() {
+		for k := 0; k < m.Rows; k++ {
+			t, _ := m.GetValue(k, k)
+			inverse.SetValue(k, k, 1/t)
+			for i := k + 1; i < m.Rows; i++ {
+				a, _ := m.Minor(i, i, k, i-1)
+				b, _ := inverse.Minor(k, i-1, k, k)
+				c, _ := a.Multiply(b)
+				d, _ := m.GetValue(i, i)
+				e, _ := c.ScalarMultiply(-1/d).GetValue(0, 0)
+				inverse.SetValue(i, k, e)
+			}
+		}
+		return inverse, nil
+	}
+
+	return nil, errors.New("Not a triangular matrix")
 }

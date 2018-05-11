@@ -319,3 +319,37 @@ func (m MatrixStruct) QR() (Q *MatrixStruct, R *MatrixStruct) {
 	Q = Q.Transpose()
 	return
 }
+
+func (m MatrixStruct) IsSquare() bool {
+	if m.Rows == m.Columns {
+		return true
+	}
+	return false
+}
+
+func (m MatrixStruct) Prune() (*MatrixStruct, error) {
+	elements := make([]float64, m.Capacity)
+	copy(elements, m.Elements)
+	tol := 1e-10
+
+	for i := 0; i < len(elements); i++ {
+		if elements[i] < tol && elements[i] > -tol {
+			elements[i] = 0
+		}
+	}
+
+	return Matrix(m.Rows, m.Columns, elements)
+}
+
+func (m MatrixStruct) Inverse() (*MatrixStruct, error) {
+	if !m.IsSquare() {
+		return nil, errors.New("Not a square matrix")
+	}
+
+	Q, R := m.QR()
+	Q_t := Q.Transpose()
+	R, _ = R.Prune()
+	R_inv, _ := R.TriangleInverse()
+	inv, _ := R_inv.Multiply(Q_t)
+	return inv, nil
+}
