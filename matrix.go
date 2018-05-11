@@ -4,7 +4,6 @@ package matrix
 import (
 	"errors"
 	"fmt"
-	"log"
 	"math"
 )
 
@@ -291,30 +290,15 @@ func (m MatrixStruct) QR() (Q *MatrixStruct, R *MatrixStruct) {
 	R = m.Clone()
 
 	for k := 0; k < N; k++ {
-		x, err := R.Minor(k, M-1, k, k)
-		if err != nil {
-			log.Fatal(err)
-		}
+		x, _ := R.Minor(k, M-1, k, k)
+		y, _ := Zeros(M-k, 1)
 
-		y, err := Zeros(M-k, 1)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		xTop, err := x.GetValue(0, 0)
-
-		if err != nil {
-			log.Fatal(err)
-		}
+		xTop, _ := x.GetValue(0, 0)
 
 		if xTop < 0 {
-			err = y.SetValue(0, 0, x.Normal("2"))
+			y.SetValue(0, 0, x.Normal("2"))
 		} else {
-			err = y.SetValue(0, 0, -x.Normal("2"))
-		}
-
-		if err != nil {
-			log.Fatal(err)
+			y.SetValue(0, 0, -x.Normal("2"))
 		}
 
 		v, _ := x.Subtract(y)

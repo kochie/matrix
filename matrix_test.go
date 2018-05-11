@@ -314,6 +314,42 @@ func TestMultiply(t *testing.T) {
 	assert.NotNil(err)
 }
 
+func TestIsEqual(t *testing.T) {
+	assert := assert.New(t)
+
+	a, err := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+	assert.Nil(err)
+
+	b, err := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+	assert.Nil(err)
+
+	assert.True(a.IsEqual(b))
+
+	c, err := Matrix(4, 5, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20})
+	assert.Nil(err)
+
+	assert.False(a.IsEqual(c))
+	d, err := Matrix(5, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20})
+	assert.Nil(err)
+
+	assert.False(a.IsEqual(d))
+	e, err := Matrix(4, 4, []float64{4, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+	assert.Nil(err)
+	assert.False(a.IsEqual(e))
+
+	f, err := Matrix(4, 4, []float64{4, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16})
+	assert.Nil(err)
+	assert.False(a.IsEqual(f))
+}
+
+func BenchmarkIsEqual(b *testing.B) {
+	a, _ := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
+
+	for i := 0; i < b.N; i++ {
+		_ = a.IsEqual(a)
+	}
+}
+
 func BenchmarkMultiply(b *testing.B) {
 	a, _ := Matrix(4, 4, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16})
 
